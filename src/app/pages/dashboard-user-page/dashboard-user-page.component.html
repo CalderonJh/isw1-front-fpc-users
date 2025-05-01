@@ -1,0 +1,143 @@
+<div class="dashboard-container">
+  <!-- Barra superior -->
+  <header class="top-bar">
+    <div class="user-info">
+      <div class="avatar">{{userInitials}}</div>
+      <div class="user-details">
+        <h2>Bienvenido, {{user.nombre}}</h2>
+        <p class="team-name">{{user.equipoFavorito}}</p>
+      </div>
+    </div>
+
+    <nav class="main-menu">
+      <button class="menu-btn active">
+        <i class="material-icons">home</i>
+        <span>Inicio</span>
+      </button>
+      <a href="/profile">
+        <button class="menu-btn">
+          <i class="material-icons">person</i>
+          <span>Perfil</span>
+        </button>
+      </a>
+
+      <button class="menu-btn">
+        <i class="material-icons">credit_card</i>
+        <span>Pagos</span>
+      </button>
+      <a href="login">
+        <button class="menu-btn logout">
+          <i class="material-icons">logout</i>
+          <span>Salir</span>
+        </button>
+      </a>
+
+    </nav>
+  </header>
+
+  <!-- Contenido principal -->
+  <main class="content-area">
+    <section class="carousel-section">
+
+      <div class="section-header">
+
+        <div class="carousel-nav">
+          <button *ngFor="let tab of tabs"
+                  [class.active]="activeTab === tab.id"
+                  (click)="setActiveTab(tab.id)">
+            {{tab.label}}
+          </button>
+        </div>
+      </div>
+
+      <!-- Boletas -->
+      <div class="carousel-content" *ngIf="activeTab === 0">
+        <div class="card" *ngFor="let ticket of boletas">
+          <div class="card-header">
+            <h3>{{ticket.partido}}</h3>
+            <span class="date">{{ticket.fecha}}</span>
+          </div>
+          <div class="card-body">
+            <p><i class="material-icons">location_on</i> {{ticket.ubicacion}}</p>
+            <div class="details">
+              <span class="section">Sección {{ticket.seccion}}</span>
+              <span class="price">{{ticket.precio | currency}}</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn primary">Ver QR</button>
+          </div>
+        </div>
+
+        <div class="empty-state" *ngIf="boletas.length === 0">
+          <i class="material-icons">confirmation_number</i>
+          <h3>No tienes boletas</h3>
+          <p>Compra boletas para los próximos partidos</p>
+          <button class="btn">Ver eventos</button>
+        </div>
+      </div>
+
+      <!-- Abonos -->
+      <div class="carousel-content" *ngIf="activeTab === 1">
+        <div class="card" *ngFor="let sub of abonos" [class.inactive]="!sub.activo">
+          <div class="card-header">
+            <h3>{{sub.nombre}}</h3>
+            <span class="status" [class.active]="sub.activo">
+              {{sub.activo ? 'ACTIVO' : 'INACTIVO'}}
+            </span>
+          </div>
+          <div class="card-body">
+            <p><i class="material-icons">event</i> {{sub.temporada}}</p>
+            <p><i class="material-icons">local_offer</i> {{sub.beneficios[0]}}</p>
+            <div class="details">
+              <span><i class="material-icons">stadium</i> {{sub.asiento}}</span>
+              <span class="price">{{sub.precio | currency}}</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn" *ngIf="sub.activo">Renovar</button>
+            <button class="btn outline" *ngIf="!sub.activo">Detalles</button>
+          </div>
+        </div>
+
+        <div class="empty-state" *ngIf="abonos.length === 0">
+          <i class="material-icons">subscriptions</i>
+          <h3>No tienes abonos</h3>
+          <p>Descubre los beneficios de nuestros abonos</p>
+          <button class="btn">Ver planes</button>
+        </div>
+      </div>
+
+      <!-- Eventos -->
+      <div class="carousel-content" *ngIf="activeTab === 2">
+        <div class="card" *ngFor="let event of eventos">
+          <div class="card-header">
+            <div class="event-date">
+              <span class="day">{{event.fecha | date:'dd'}}</span>
+              <span class="month">{{event.fecha | date:'MMM' | uppercase}}</span>
+            </div>
+            <h3>{{event.nombre}}</h3>
+          </div>
+          <div class="card-body">
+            <p><i class="material-icons">schedule</i> {{event.hora}}</p>
+            <p><i class="material-icons">location_on</i> {{event.ubicacion}}</p>
+            <div class="details">
+              <span>Desde</span>
+              <span class="price">{{event.precioDesde | currency}}</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn primary">Comprar</button>
+          </div>
+        </div>
+
+        <div class="empty-state" *ngIf="eventos.length === 0">
+          <i class="material-icons">event</i>
+          <h3>No hay eventos próximos</h3>
+          <p>Pronto anunciaremos nuevos partidos</p>
+          <button class="btn">Ver calendario</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

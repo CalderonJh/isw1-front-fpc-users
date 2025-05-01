@@ -1,1 +1,136 @@
-<p>register-page works!</p>
+<div class="register-container">
+  <div class="register-card">
+    <h1>Registro de nuevo usuario</h1>
+    <p class="subtitle">Complete el formulario para crear su cuenta</p>
+
+    <form class="register-form" (ngSubmit)="onSubmit()" #registerForm="ngForm">
+      <div class="row">
+        <div class="form-group">
+          <label for="nombre">Nombre*</label>
+          <input type="text" id="nombre" name="nombre" [(ngModel)]="user.nombre"
+                 required minlength="3" maxlength="250" #nombre="ngModel">
+          <div class="error-message" *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
+            <span *ngIf="nombre.errors?.['required']">El nombre es requerido</span>
+            <span *ngIf="nombre.errors?.['minlength']">Mínimo 3 caracteres</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="apellido">Apellido*</label>
+          <input type="text" id="apellido" name="apellido" [(ngModel)]="user.apellido"
+                 required minlength="3" maxlength="250" #apellido="ngModel">
+          <div class="error-message" *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)">
+            <span *ngIf="apellido.errors?.['required']">El apellido es requerido</span>
+            <span *ngIf="apellido.errors?.['minlength']">Mínimo 3 caracteres</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email*</label>
+        <input type="email" id="email" name="email" [(ngModel)]="user.email"
+               required minlength="5" maxlength="250" #email="ngModel">
+        <div class="error-message" *ngIf="email.invalid && (email.dirty || email.touched)">
+          <span *ngIf="email.errors?.['required']">El email es requerido</span>
+          <span *ngIf="email.errors?.['email']">Ingrese un email válido</span>
+          <span *ngIf="email.errors?.['minlength']">Mínimo 5 caracteres</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group">
+          <label for="tipoDocumento">Tipo de documento*</label>
+          <select id="tipoDocumento" name="tipoDocumento" [(ngModel)]="user.tipoDocumento" required #tipoDocumento="ngModel">
+            <option value="">Seleccione...</option>
+            <option *ngFor="let tipo of tiposDocumento" [value]="tipo.id">{{tipo.nombre}}</option>
+          </select>
+          <div class="error-message" *ngIf="tipoDocumento.invalid && (tipoDocumento.dirty || tipoDocumento.touched)">
+            Seleccione un tipo de documento
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="numeroDocumento">Número de documento*</label>
+          <input type="text" id="numeroDocumento" name="numeroDocumento" [(ngModel)]="user.numeroDocumento"
+                 required minlength="6" maxlength="25" #numeroDocumento="ngModel">
+          <div class="error-message" *ngIf="numeroDocumento.invalid && (numeroDocumento.dirty || numeroDocumento.touched)">
+            <span *ngIf="numeroDocumento.errors?.['required']">El número es requerido</span>
+            <span *ngIf="numeroDocumento.errors?.['minlength']">Mínimo 6 caracteres</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group">
+          <label for="fechaNacimiento">Fecha de nacimiento*</label>
+          <input type="date" id="fechaNacimiento" name="fechaNacimiento" [(ngModel)]="user.fechaNacimiento"
+                 required max="{{today | date:'yyyy-MM-dd'}}" #fechaNacimiento="ngModel">
+          <div class="error-message" *ngIf="fechaNacimiento.invalid && (fechaNacimiento.dirty || fechaNacimiento.touched)">
+            Seleccione una fecha válida
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="genero">Género</label>
+          <select id="genero" name="genero" [(ngModel)]="user.genero">
+            <option value="">Seleccione...</option>
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="telefono">Teléfono</label>
+        <input type="tel" id="telefono" name="telefono" [(ngModel)]="user.telefono"
+               minlength="7" maxlength="10" pattern="[0-9]*" #telefono="ngModel">
+        <div class="error-message" *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)">
+          <span *ngIf="telefono.errors?.['pattern']">Solo números</span>
+          <span *ngIf="telefono.errors?.['minlength']">Mínimo 7 dígitos</span>
+          <span *ngIf="telefono.errors?.['maxlength']">Máximo 10 dígitos</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group">
+          <label for="password">Contraseña*</label>
+          <div class="password-container">
+            <input [type]="showPassword ? 'text' : 'password'" id="password" name="password" [(ngModel)]="user.password"
+                   required minlength="6" maxlength="250" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$" #password="ngModel">
+            <button type="button" class="toggle-password" (click)="showPassword = !showPassword">
+              <i class="material-icons">{{showPassword ? 'visibility_off' : 'visibility'}}</i>
+            </button>
+          </div>
+          <div class="error-message" *ngIf="password.invalid && (password.dirty || password.touched)">
+            <span *ngIf="password.errors?.['required']">La contraseña es requerida</span>
+            <span *ngIf="password.errors?.['minlength']">Mínimo 6 caracteres</span>
+            <span *ngIf="password.errors?.['pattern']">Debe contener mayúsculas, minúsculas y números</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirmar contraseña*</label>
+          <div class="password-container">
+            <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirmPassword" name="confirmPassword"
+                   [(ngModel)]="confirmPassword" required #confirmPasswordField="ngModel">
+            <button type="button" class="toggle-password" (click)="showConfirmPassword = !showConfirmPassword">
+              <i class="material-icons">{{showConfirmPassword ? 'visibility_off' : 'visibility'}}</i>
+            </button>
+          </div>
+          <div class="error-message" *ngIf="(confirmPasswordField.invalid || user.password !== confirmPassword) && (confirmPasswordField.dirty || confirmPasswordField.touched)">
+            <span *ngIf="confirmPasswordField.errors?.['required']">Confirme la contraseña</span>
+            <span *ngIf="user.password !== confirmPassword">Las contraseñas no coinciden</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-footer">
+        <button type="submit" class="register-button" [disabled]="registerForm.invalid || user.password !== confirmPassword || loading">
+          <span *ngIf="!loading">Registrarse</span>
+          <span *ngIf="loading" class="spinner"></span>
+        </button>
+        <p class="login-link">¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión aquí</a></p>
+      </div>
+    </form>
+  </div>
+</div>

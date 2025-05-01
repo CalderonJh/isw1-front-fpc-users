@@ -1,0 +1,174 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4fdf67, #c5ee31);
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px 0;
+}
+
+.profile-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  width: 100%;
+  max-width: 900px;
+}
+
+h1 {
+  color: #2c3e50;
+  font-size: 28px;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+h2 {
+  color: #7f8c8d;
+  font-size: 18px;
+  margin-bottom: 30px;
+  font-weight: 500;
+  border-bottom: 1px solid #ecf0f1;
+  padding-bottom: 10px;
+}
+
+h3 {
+  color: #3498db;
+  font-size: 16px;
+  margin: 20px 0 15px 0;
+  font-weight: 500;
+}
+
+.form-sections {
+  display: flex;
+  gap: 30px;
+}
+
+.form-section {
+  flex: 1;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: #34495e;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+label:after {
+  content: '*' attr(data-required);
+  color: #e74c3c;
+  margin-left: 4px;
+}
+
+label:not([data-required]):after {
+  content: '';
+}
+
+input, select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s;
+  box-sizing: border-box;
+}
+
+input:focus, select:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+input.ng-invalid.ng-touched, select.ng-invalid.ng-touched {
+  border-color: #e74c3c;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 5px;
+  min-height: 18px;
+}
+
+.update-button {
+  padding: 14px 30px;
+  background: linear-gradient(to right, #a5f80c, #25eb71);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 20px;
+}
+
+.update-button:hover:not(:disabled) {
+  background: linear-gradient(to right,  #4fdf67, #c5ee31);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.update-button:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.message {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.message.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+@media (max-width: 768px) {
+  .form-sections {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .profile-card {
+    padding: 30px 20px;
+  }
+}
