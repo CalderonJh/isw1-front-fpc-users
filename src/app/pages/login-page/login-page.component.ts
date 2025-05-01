@@ -1,44 +1,35 @@
-import {Component} from '@angular/core';
-import {AuthService} from '../../services/auth.service';
-import {firstValueFrom} from 'rxjs';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { UserService } from '../../services/user.service';
+
 
 @Component({
-  imports: [],
-  templateUrl: './login-page.component.html',
+  selector: 'app-login-page',
   standalone: true,
-  styleUrl: './login-page.component.css'
+  imports: [CommonModule, FormsModule], // <-- Esto es lo importante
+  templateUrl: './login-page.component.html',
+  styleUrls: ['./login-page.component.css']
 })
 export class LoginPageComponent {
-  private username: string = 'jhon@email.com';
-  private password: string = 'Holacomoesta123';
+  email: string = '';
+  password: string = '';
+  showPassword: boolean = false;
+  loading: boolean = false;
 
 
-  constructor(private service: AuthService) {
+  constructor (private service:UserService) {
+
+  }
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
   }
 
-  async login() {
-    try {
-      const response = await firstValueFrom(this.service.login(this.username, this.password));
-      console.log('Login successful', response);
-
-      const authHeader = response.headers.get('Authorization');
-      if (authHeader) {
-        localStorage.setItem('token', authHeader);
-      } else {
-        console.error('Authorization header not found');
-      }
-      console.log('Authorization Header:', authHeader);
-    } catch (error) {
-      console.error('Login failed', error);
-    }
-  }
-
-  async getClubs(){
-    try {
-      const response = await firstValueFrom(this.service.getClubs());
-      console.log('Clubs fetched successfully', response);
-    } catch (error) {
-      console.error('Failed to fetch clubs', error);
-    }
+  onSubmit(): void {
+    this.loading = true;
+    setTimeout(() => {
+      console.log('Login attempt with:', { email: this.email, password: this.password });
+      this.loading = false;
+    }, 1500);
   }
 }

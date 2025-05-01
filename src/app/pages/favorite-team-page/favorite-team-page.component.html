@@ -1,0 +1,24 @@
+<div class="team-selection-container">
+  <div class="team-selection-card">
+    <h1>Elige tu equipo favorito</h1>
+    <p class="subtitle">Selecciona el equipo que más te guste</p>
+
+    <div class="teams-grid">
+      <div class="team-card" *ngFor="let team of teams"
+           [class.selected]="selectedTeam === team.id"
+           (click)="selectTeam(team.id)">
+        <div class="team-logo">
+          <img [src]="team.logo" [alt]="team.name">
+        </div>
+        <div class="team-name">{{team.name}}</div>
+      </div>
+    </div>
+
+    <div class="selected-team" *ngIf="selectedTeam">
+      <p>Tu equipo seleccionado: <strong>{{getSelectedTeamName()}}</strong></p>
+      <button class="confirm-button" (click)="confirmSelection()">
+        Confirmar selección
+      </button>
+    </div>
+  </div>
+</div>
