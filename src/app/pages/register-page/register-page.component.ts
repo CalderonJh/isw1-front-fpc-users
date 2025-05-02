@@ -1,7 +1,10 @@
+// register-page.component.ts (actualizado)
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { RegisterService, RegisterUser } from '../../services/register.user'; // Asegúrate de que la ruta sea correcta
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-page',
@@ -37,17 +40,42 @@ export class RegisterPageComponent {
     password: ''
   };
 
+  constructor(private registerService: RegisterService, private router: Router) {}
+
   onSubmit() {
     if (this.loading) return;
 
-    this.loading = true;
-    console.log('Registrando usuario:', this.user);
+    // Validar que las contraseñas coincidan
+    if (this.user.password !== this.confirmPassword) {
+      alert('Las contraseñas no coinciden');
+      return;
+    }
 
-    // Simulación de llamada a API
-    setTimeout(() => {
-      this.loading = false;
-      alert('Registro exitoso! Por favor inicie sesión.');
-      // Aquí iría la navegación al login o la lógica de registro real
-    }, 2000);
+    this.loading = true;
+
+    // Mapear los datos del formulario al formato esperado por el backend
+    const registerData: RegisterUser = {
+      name: this.user.nombre,
+      lastName: this.user.apellido,
+      email: this.user.email,
+      documentTypeId: Number(this.user.tipoDocumento),
+      documentNumber: this.user.numeroDocumento,
+      gender: this.user.genero || 'M', // Valor por defecto si no se selecciona
+      birthDate: this.user.fechaNacimiento,
+      phoneNumber: this.user.telefono || '', // Si es opcional
+      password: this.user.password
+    };
+
+    this.registerService.register(registerData).subscribe({
+      next: (response) => {
+        this.loading = false;
+        alert('Registro exitoso! Por favor inicie sesión.');
+        this.router.navigate(['/login']); // Redirigir al login después del registro
+      },
+      error: (error) => {
+        this.loading = false;
+        alert(error.message || 'Error en el registro. Por favor, inténtelo nuevamente.');
+      }
+    });
   }
 }
