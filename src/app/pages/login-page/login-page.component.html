@@ -1,8 +1,13 @@
+<!-- login-page.component.html (actualizado) -->
 <div class="login-container">
   <div class="login-card">
     <div class="logo-container">
-
       <h1>FPC</h1>
+    </div>
+
+    <!-- Mensaje de error general -->
+    <div class="error-message" *ngIf="errorMessage">
+      {{ errorMessage }}
     </div>
 
     <form class="login-form" (ngSubmit)="onSubmit()">

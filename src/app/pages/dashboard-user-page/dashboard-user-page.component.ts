@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+
+
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../services/login.user';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -8,7 +12,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './dashboard-user-page.component.html',
   styleUrls: ['./dashboard-user-page.component.css']
 })
-export class DashboardPageComponent {
+export class DashboardPageComponent implements OnInit {
   activeTab = 0;
   tabs = [
     { id: 0, label: 'Boletas' },
@@ -16,15 +20,12 @@ export class DashboardPageComponent {
     { id: 2, label: 'Eventos' }
   ];
 
+  // Datos del usuario (inicialmente vacíos)
   user = {
-    nombre: 'Juan',
-    apellido: 'Perez',
-    equipoFavorito: 'Bucaramanga'
+    nombre: 'Usuario',
+    email: '',
+    equipoFavorito: 'Equipo'
   };
-
-  get userInitials(): string {
-    return this.user.nombre.charAt(0) + this.user.apellido.charAt(0);
-  }
 
   // Ejemplos de boletas
   boletas = [
@@ -95,6 +96,60 @@ export class DashboardPageComponent {
       precioDesde: 42000
     }
   ];
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.loadUserData();
+
+    /*
+    // Código para cuando tengas la API de datos de usuario:
+    this.loadUserDetailsFromApi();
+    */
+  }
+
+  // Obtiene las iniciales para el avatar
+  get userInitials(): string {
+    const names = this.user.nombre.split(' ');
+    return names[0].charAt(0) + (names[1] ? names[1].charAt(0) : '');
+  }
+
+  // Carga datos básicos del token
+  private loadUserData(): void {
+    const userData = this.authService.getUserData();
+    if (userData) {
+      this.user.email = userData.sub || '';
+      this.user.nombre = userData.name || 'Usuario';
+
+      // Si el backend incluye más datos en el token:
+      // this.user.equipoFavorito = userData.favoriteTeam || 'Equipo';
+    }
+  }
+
+  /*
+  // Ejemplo para cuando tengas la ruta de la API de usuario:
+  private loadUserDetailsFromApi(): void {
+    this.authService.getUserProfile().subscribe({
+      next: (profile) => {
+        this.user.nombre = profile.fullName;
+        this.user.equipoFavorito = profile.favoriteTeam;
+        // Actualiza otros campos según necesites
+      },
+      error: (err) => {
+        console.error('Error cargando perfil:', err);
+      }
+    });
+  }
+  */
+
+  // Cierra la sesión
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 
   setActiveTab(tabId: number): void {
     this.activeTab = tabId;
