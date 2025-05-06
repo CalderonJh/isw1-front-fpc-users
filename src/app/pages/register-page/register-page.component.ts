@@ -70,7 +70,7 @@ export class RegisterPageComponent {
       next: (response) => {
         this.loading = false;
         alert('Registro exitoso! Por favor inicie sesión.');
-        this.router.navigate(['/login']); // Redirigir al login después del registro
+        this.router.navigate(['/favorite']); // Redirigir al login después del registro
       },
       error: (error) => {
         this.loading = false;

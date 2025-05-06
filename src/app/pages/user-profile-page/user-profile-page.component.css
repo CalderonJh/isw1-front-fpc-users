@@ -1,7 +1,7 @@
 :host {
   display: block;
   min-height: 100vh;
-  background: linear-gradient(135deg, #4fdf67, #c5ee31);
+  background: #f0f0f0;
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -105,7 +105,7 @@ input.ng-invalid.ng-touched, select.ng-invalid.ng-touched {
 
 .update-button {
   padding: 14px 30px;
-  background: linear-gradient(to right, #a5f80c, #25eb71);
+  background: rgb(57, 153, 255);
   color: white;
   border: none;
   border-radius: 8px;
@@ -116,11 +116,13 @@ input.ng-invalid.ng-touched, select.ng-invalid.ng-touched {
   margin-top: 20px;
 }
 
+/*
 .update-button:hover:not(:disabled) {
   background: linear-gradient(to right,  #4fdf67, #c5ee31);
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
+*/
 
 .update-button:disabled {
   background: #bdc3c7;
