@@ -8,7 +8,7 @@
 
 /* Barra superior */
 .top-bar {
-  background: linear-gradient(135deg, #4fdf67, #c5ee31);
+  background: #f0f0f0;
   color: black;
   padding: 15px 30px;
   display: flex;
@@ -26,7 +26,8 @@
 .avatar {
   width: 50px;
   height: 50px;
-  background: #3498db;
+  background: rgb(57, 153, 255);
+  color: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -52,9 +53,9 @@
 }
 
 .menu-btn {
-  background: rgb(98, 171, 232);
+  background:rgb(57, 153, 255);
   border: none;
-  color: black;
+  color: rgb(255, 255, 255);
   padding: 10px 15px;
   border-radius: 6px;
   display: flex;
@@ -64,21 +65,21 @@
   transition: all 0.3s;
 }
 
+/*
 .menu-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.21);
 }
-
-.menu-btn.active {
-  background: rgb(98, 171, 232);
-}
-
-.menu-btn.logout {
-  background: rgba(231, 76, 60, 0.2);
-}
-
-.menu-btn.logout:hover {
+  .menu-btn.logout:hover {
   background: rgba(231, 76, 60, 0.3);
 }
+*/
+
+
+.menu-btn.logout {
+  background: red;
+}
+
+
 
 /* Área de contenido */
 .content-area {
@@ -148,8 +149,8 @@
 
 .card-header {
   padding: 15px;
-  background: linear-gradient(135deg, #4fdf67, #c5ee31);
-  color: white;
+  background: #f0f0f0;
+  color: black;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -225,28 +226,32 @@
   text-align: right;
 }
 
+
 /* Botones */
 .btn {
   padding: 8px 16px;
   border: none;
   border-radius: 6px;
-  background: #3498db;
+  background: rgb(57, 153, 255);
   color: white;
   cursor: pointer;
   transition: all 0.3s;
 }
 
+/*
 .btn:hover {
   background: #2980b9;
 }
-
-.btn.primary {
-  background: #2ecc71;
-}
-
-.btn.primary:hover {
+  .btn.primary:hover {
   background: #27ae60;
 }
+*/
+
+.btn.primary {
+  background: rgb(57, 153, 255);
+}
+
+
 
 .btn.outline {
   background: none;

@@ -9,6 +9,7 @@ export const routes: Routes = [
         (m) => m.LoginPageComponent
       )
   },
+
   {
     path: 'register',
     loadComponent: () =>

@@ -1,7 +1,7 @@
 :host {
   display: block;
   min-height: 100vh;
-  background: linear-gradient(135deg, #4fdf67, #c5ee31);
+  background: #F0F0F0;
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -116,7 +116,7 @@ input.invalid, select.invalid {
 .register-button {
   width: 100%;
   padding: 14px;
-  background: linear-gradient(to right,  #4fdf67, #c5ee31);
+  background: blue;
   color: white;
   border: none;
   border-radius: 8px;
@@ -127,11 +127,13 @@ input.invalid, select.invalid {
   margin-top: 10px;
 }
 
+/*
 .register-button:hover:not(:disabled) {
   background: linear-gradient(to right, #4fdf67, #c0d825);
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
+*/
 
 .register-button:disabled {
   background: #ccc;
