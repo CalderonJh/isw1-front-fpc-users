@@ -1,21 +1,44 @@
+<!-- favorite-team-page.component.html -->
 <div class="team-selection-container">
   <div class="team-selection-card">
     <h1>Elige tu equipo favorito</h1>
     <p class="subtitle">Selecciona el equipo que más te guste</p>
 
-    <div class="teams-grid">
+    <!-- Estado de carga -->
+    <div *ngIf="isLoading" class="loading-message">
+      <div class="spinner"></div>
+      <p>Cargando equipos...</p>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="error && !isLoading" class="error-message">
+      {{error}}
+      <button (click)="loadTeams()">Reintentar</button>
+    </div>
+
+    <!-- Lista de equipos -->
+    <div class="teams-grid" *ngIf="!isLoading && !error">
       <div class="team-card" *ngFor="let team of teams"
            [class.selected]="selectedTeam === team.id"
            (click)="selectTeam(team.id)">
-        <div class="team-logo">
-          <img [src]="team.logo" [alt]="team.name">
-        </div>
-        <div class="team-name">{{team.name}}</div>
+           <div class="team-logo">
+            <img [src]="team.imageUrl" [alt]="team.name"
+                 onerror="this.src=''">
+          </div>
+
+        <div class="team-short-name">{{team.shortName}}</div>
       </div>
     </div>
 
+    <!-- Equipo seleccionado -->
     <div class="selected-team" *ngIf="selectedTeam">
-      <p>Tu equipo seleccionado: <strong>{{getSelectedTeamName()}}</strong></p>
+      <p>Tu equipo seleccionado:
+        <strong>{{getSelectedTeamName()}}</strong>
+        ({{getSelectedTeamShortName()}})
+      </p>
+      <div class="selected-team-image">
+        <img [src]="getSelectedTeam()?.imageUrl" [alt]="getSelectedTeamName()">
+      </div>
       <button class="confirm-button" (click)="confirmSelection()">
         Confirmar selección
       </button>

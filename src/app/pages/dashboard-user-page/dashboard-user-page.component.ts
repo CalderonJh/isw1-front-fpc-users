@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/login.user';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
+import { ProfileService } from '../../services/profile.service';
 @Component({
   selector: 'app-dashboard-page',
   standalone: true,
@@ -22,7 +22,7 @@ export class DashboardPageComponent implements OnInit {
 
   // Datos del usuario (inicialmente vacíos)
   user = {
-    nombre: 'Usuario',
+    nombre: '',
     email: '',
     equipoFavorito: 'Equipo'
   };
@@ -97,18 +97,29 @@ export class DashboardPageComponent implements OnInit {
     }
   ];
 
+
   constructor(
     private authService: AuthService,
+    private profileService: ProfileService,  // <-- Añade esta línea
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.loadUserData();
+    this.loadUserProfile();  // Carga los datos desde el API
+  }
 
-    /*
-    // Código para cuando tengas la API de datos de usuario:
-    this.loadUserDetailsFromApi();
-    */
+  private loadUserProfile(): void {
+    this.profileService.getUserProfile().subscribe({
+      next: (profile) => {
+        this.user.nombre = profile.name;  // Asigna el nombre desde el API
+        this.user.email = profile.email;  // Asigna el email (si lo necesitas)
+      },
+      error: (err) => {
+        console.error('Error al cargar el perfil:', err);
+        // Opcional: Cargar datos básicos desde el token si el API falla
+        this.loadUserData();
+      }
+    });
   }
 
   // Obtiene las iniciales para el avatar
@@ -122,7 +133,7 @@ export class DashboardPageComponent implements OnInit {
     const userData = this.authService.getUserData();
     if (userData) {
       this.user.email = userData.sub || '';
-      this.user.nombre = userData.name || 'Usuario';
+      this.user.nombre = userData.name || '';
 
       // Si el backend incluye más datos en el token:
       // this.user.equipoFavorito = userData.favoriteTeam || 'Equipo';

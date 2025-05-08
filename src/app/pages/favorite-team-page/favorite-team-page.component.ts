@@ -1,40 +1,80 @@
-import { Component } from '@angular/core';
+// favorite-team-page.component.ts
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
+import { TeamService, TeamWithImage } from '../../services/team.service';
+import { HttpClientModule } from '@angular/common/http';
+
+
 
 @Component({
   selector: 'app-favorite-team-page',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, HttpClientModule],
   templateUrl: './favorite-team-page.component.html',
   styleUrls: ['./favorite-team-page.component.css']
 })
-export class FavoriteTeamPageComponent {
+export class FavoriteTeamPageComponent implements OnInit {
   selectedTeam: number | null = null;
-  constructor(private router: Router) {}
-  teams = [
-    { id: 1, name: 'Bucaramanga', logo: 'img/bga1.png' },
-    { id: 2, name: 'Real Santander', logo: 'img/real.png' },
-    { id: 3, name: 'Llaneros FC', logo: 'img/llaneros.jpg' },
-    { id: 4, name: 'Junior', logo: 'img/junior.png' },
-    // Puedes agregar más equipos aquí
-  ];
+  teams: TeamWithImage[] = [];
+  isLoading: boolean = true;
+  error: string | null = null;
 
-  selectTeam(teamId: number) {
+  constructor(
+    private router: Router,
+    private teamService: TeamService
+  ) {}
+
+  ngOnInit(): void {
+    this.loadTeams();
+    this.teamService.getTeamsWithImages().subscribe(teams => {
+      this.teams = teams;
+      console.log(this.teams); // Aquí puedes verificar que los equipos tienen la URL sanitizada
+    });
+  }
+
+  loadTeams(): void {
+    this.isLoading = true;
+    this.error = null;
+
+    this.teamService.getTeamsWithImages().subscribe({
+      next: (teams) => {
+        this.teams = teams;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.error = 'Error al cargar los equipos. Por favor intenta más tarde.';
+        this.isLoading = false;
+        console.error('Error loading teams:', err);
+      }
+    });
+  }
+
+  selectTeam(teamId: number): void {
     this.selectedTeam = teamId;
   }
 
+
+  getSelectedTeam(): TeamWithImage | undefined {
+    return this.teams.find(t => t.id === this.selectedTeam);
+  }
+
   getSelectedTeamName(): string {
-    const team = this.teams.find(t => t.id === this.selectedTeam);
+    const team = this.getSelectedTeam();
     return team ? team.name : '';
   }
 
-  confirmSelection() {
+  getSelectedTeamShortName(): string {
+    const team = this.getSelectedTeam();
+    return team ? team.shortName : '';
+  }
+
+  confirmSelection(): void {
     if (this.selectedTeam) {
-      alert(`Has seleccionado a ${this.getSelectedTeamName()} como tu equipo favorito!`);
-      this.router.navigate(['/dashboardUser']); // Redirigir al login después del registro
-      // Aquí podrías guardar la selección en tu base de datos
+      alert(`Has seleccionado a ${this.getSelectedTeamName()} (${this.getSelectedTeamShortName()}) como tu equipo favorito!`);
+      this.router.navigate(['/dashboardUser']);
+      // Aquí podrías llamar a otro servicio para guardar la selección
     }
   }
 }
