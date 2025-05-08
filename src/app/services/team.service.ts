@@ -45,7 +45,7 @@ export class TeamService {
               console.log(`Image URL for team ${team.name}:`, imageUrl); // Mostrar imageUrl
               return {
                 ...team,
-                imageUrl // Aquí agregamos la sanitización
+                imageUrl// Aquí agregamos la sanitización
               };
             })
           )
@@ -67,9 +67,11 @@ export class TeamService {
       headers,
       responseType: 'text'
     }).pipe(
-      map(url => {
-        console.log(`Raw URL from API for imageId ${imageId}:`, url); // Mostrar URL cruda
-        return this.sanitizer.bypassSecurityTrustUrl(url || 'img/llaneros.jpg');
+      map(urlString => {
+        console.log(`Raw URL from API for imageId ${imageId}:`, urlString);
+        const parsed = JSON.parse(urlString); // <- Aquí se convierte a objeto
+        const realUrl = parsed.url || 'img/llaneros.jpg';
+        return this.sanitizer.bypassSecurityTrustUrl(realUrl);
       })
     );
   }
