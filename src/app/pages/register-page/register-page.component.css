@@ -116,7 +116,7 @@ input.invalid, select.invalid {
 .register-button {
   width: 100%;
   padding: 14px;
-  background: blue;
+  background: linear-gradient(to right, #1100ff, #85c2ff);
   color: white;
   border: none;
   border-radius: 8px;
@@ -127,13 +127,14 @@ input.invalid, select.invalid {
   margin-top: 10px;
 }
 
-/*
+
 .register-button:hover:not(:disabled) {
-  background: linear-gradient(to right, #4fdf67, #c0d825);
+  background: linear-gradient(to right, #1100ff, #7a32ff);
   transform: translateY(-2px);
+
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
-*/
+
 
 .register-button:disabled {
   background: #ccc;

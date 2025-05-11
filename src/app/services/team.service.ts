@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map, switchMap, forkJoin, of } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { AuthService } from './login.user';
 
 interface Team {
   id: number;
@@ -27,11 +28,13 @@ export class TeamService {
   private teamsEndpoint = '/su/club/list';
   private imagesEndpoint = '/images/';
 
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {}
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer, private authService: AuthService) {}
 
   getTeamsWithImages(): Observable<TeamWithImage[]> {
+    const token = this.authService.getToken();
+    console.log(token);
     const headers = new HttpHeaders({
-      'Authorization': 'Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbeyJpZCI6MywibmFtZSI6IlNVUEVSVVNFUiJ9LHsiaWQiOjEsIm5hbWUiOiJVU0VSIn0seyJpZCI6MiwibmFtZSI6IkNMVUJfQURNSU4ifV0sImlhdCI6MTc0NjY3MTcxMiwiZXhwIjoxNzQ2NzU4MTEyfQ.gS7ejq-GNtKbX2yZTqdjtucvPypAaqo1Pk7IJX5Zms31cNK6isVtDX-4lmJviz9X' // Reemplaza con tu token real
+      'Authorization': `Bearer ${token}` // Reemplaza con tu token real
     });
 
     return this.http.get<Team[]>(`${this.baseUrl}${this.teamsEndpoint}`, { headers }).pipe(
@@ -58,9 +61,9 @@ export class TeamService {
 
   private getImageUrl(imageId: string): Observable<SafeUrl> {
     if (!imageId) return of(this.sanitizer.bypassSecurityTrustUrl('img/llaneros.jpg'));
-
+    const token = this.authService.getToken();
     const headers = new HttpHeaders({
-      'Authorization': 'Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbeyJpZCI6MywibmFtZSI6IlNVUEVSVVNFUiJ9LHsiaWQiOjEsIm5hbWUiOiJVU0VSIn0seyJpZCI6MiwibmFtZSI6IkNMVUJfQURNSU4ifV0sImlhdCI6MTc0NjY3MTcxMiwiZXhwIjoxNzQ2NzU4MTEyfQ.gS7ejq-GNtKbX2yZTqdjtucvPypAaqo1Pk7IJX5Zms31cNK6isVtDX-4lmJviz9X'
+      'Authorization': `Bearer ${token}`
     });
 
     return this.http.get(`${this.baseUrl}${this.imagesEndpoint}${imageId}`, {

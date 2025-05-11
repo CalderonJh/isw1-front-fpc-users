@@ -45,7 +45,7 @@ h3 {
   font-weight: 500;
 }
 .menu-btn {
-  background:rgb(57, 153, 255);
+  background:linear-gradient(to right, #1100ff, #85c2ff);
   border: none;
   color: rgb(255, 255, 255);
   padding: 10px 15px;
@@ -55,6 +55,9 @@ h3 {
   gap: 8px;
   cursor: pointer;
   transition: all 0.3s;
+}
+.menu-btn:hover {
+  background: linear-gradient(to right, #1100ff, #7a32ff);
 }
 .form-sections {
   display: flex;
@@ -116,7 +119,7 @@ input.ng-invalid.ng-touched, select.ng-invalid.ng-touched {
 
 .update-button {
   padding: 14px 30px;
-  background: rgb(57, 153, 255);
+  background: linear-gradient(to right, #1100ff, #85c2ff);
   color: white;
   border: none;
   border-radius: 8px;
@@ -127,13 +130,13 @@ input.ng-invalid.ng-touched, select.ng-invalid.ng-touched {
   margin-top: 20px;
 }
 
-/*
+
 .update-button:hover:not(:disabled) {
-  background: linear-gradient(to right,  #4fdf67, #c5ee31);
+  background: linear-gradient(to right, #1100ff, #7a32ff);
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
-*/
+
 
 .update-button:disabled {
   background: #bdc3c7;
