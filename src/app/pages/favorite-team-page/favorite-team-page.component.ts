@@ -6,8 +6,6 @@ import { RouterModule } from '@angular/router';
 import { TeamService, TeamWithImage } from '../../services/team.service';
 import { HttpClientModule } from '@angular/common/http';
 
-
-
 @Component({
   selector: 'app-favorite-team-page',
   standalone: true,
@@ -55,7 +53,6 @@ export class FavoriteTeamPageComponent implements OnInit {
     this.selectedTeam = teamId;
   }
 
-
   getSelectedTeam(): TeamWithImage | undefined {
     return this.teams.find(t => t.id === this.selectedTeam);
   }
@@ -72,9 +69,16 @@ export class FavoriteTeamPageComponent implements OnInit {
 
   confirmSelection(): void {
     if (this.selectedTeam) {
-      alert(`Has seleccionado a ${this.getSelectedTeamName()} (${this.getSelectedTeamShortName()}) como tu equipo favorito!`);
-      this.router.navigate(['/dashboardUser']);
-      // Aquí podrías llamar a otro servicio para guardar la selección
+      this.teamService.subscribeToTeam(this.selectedTeam).subscribe({
+        next: () => {
+          alert(`Has seleccionado a ${this.getSelectedTeamName()} (${this.getSelectedTeamShortName()}) como tu equipo favorito!`);
+          this.router.navigate(['/dashboardUser']);
+        },
+        error: (err) => {
+          console.error('Error al suscribirse al equipo:', err);
+          alert('Ocurrió un error al suscribirse al equipo. Por favor intenta nuevamente.');
+        }
+      });
     }
   }
 }
