@@ -126,5 +126,10 @@ export class AuthService {
       return null;
     }
   }
+  public saveTokenAfterRegister(token: string): void {
+    this.storeToken(token);
+    this.isAuthenticatedSubject.next(true);
+  }
+
 
 }

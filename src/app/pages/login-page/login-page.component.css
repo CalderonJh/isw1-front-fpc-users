@@ -111,7 +111,7 @@ input.invalid {
 .login-button {
   width: 100%;
   padding: 14px;
-  background: rgb(57, 153, 255);
+  background: linear-gradient(to right, #1100ff, #85c2ff);
   color: white;
   border: none;
   border-radius: 8px;
@@ -122,13 +122,13 @@ input.invalid {
   margin-top: 10px;
 }
 
-/*
+
 .login-button:hover {
-  background: linear-gradient(to right, #dae630, #0dd532);
+  background: linear-gradient(to right, #1100ff, #7a32ff);
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
-*/
+
 
 .login-button:disabled {
   background: #ccc;

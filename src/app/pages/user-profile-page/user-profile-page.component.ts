@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ProfileService } from '../../services/profile.service';
 
 @Component({
   selector: 'app-user-profile-page',
@@ -9,12 +10,13 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './user-profile-page.component.html',
   styleUrls: ['./user-profile-page.component.css']
 })
-export class UserProfilePageComponent {
+export class UserProfilePageComponent implements OnInit {
   loading = false;
+  loadingProfile = false;
   message = '';
   messageType: 'success' | 'error' | '' = '';
 
-  // Tipos de documento (ejemplo)
+  // Tipos de documento
   tiposDocumento = [
     { id: 1, nombre: 'Cédula de Ciudadanía' },
     { id: 2, nombre: 'Tarjeta de Identidad' },
@@ -22,16 +24,53 @@ export class UserProfilePageComponent {
     { id: 4, nombre: 'Pasaporte' }
   ];
 
-  // Datos del usuario (ejemplo inicial)
+  // Datos del usuario
   user = {
-    nombre: 'Juan',
-    apellido: 'Pérez',
+    nombre: '',
+    apellido: '',
     tipoDocumento: 1,
-    numeroDocumento: '123456789',
-    direccion: 'Calle 123 # 45-67',
-    email: 'juan.perez@example.com',
-    telefono: '3001234567'
+    numeroDocumento: '',
+    genero: '',
+    fechaNacimiento: '',
+    direccion: '', // No viene del backend
+    email: '',
+    telefono: ''
   };
+
+  constructor(private profileService: ProfileService) {}
+
+  ngOnInit(): void {
+    this.loadUserProfile();
+  }
+
+  loadUserProfile(): void {
+    this.loadingProfile = true;
+    this.profileService.getUserProfile().subscribe({
+      next: (profile) => {
+        this.mapProfileToForm(profile);
+        this.loadingProfile = false;
+      },
+      error: (err) => {
+        console.error(err);
+        this.loadingProfile = false;
+        this.showMessage('Error al cargar el perfil', 'error');
+      }
+    });
+  }
+
+  private mapProfileToForm(profile: any): void {
+    this.user = {
+      nombre: profile.name,
+      apellido: profile.lastName,
+      tipoDocumento: profile.documentTypeId,
+      numeroDocumento: profile.documentNumber,
+      genero: profile.gender,
+      fechaNacimiento: profile.birthDate,
+      direccion: '', // Campo no viene del backend
+      email: profile.email,
+      telefono: profile.phoneNumber
+    };
+  }
 
   onSubmit(): void {
     if (this.loading) return;
@@ -40,14 +79,35 @@ export class UserProfilePageComponent {
     this.message = '';
     this.messageType = '';
 
-    // Simulamos una llamada a API con timeout
-    setTimeout(() => {
-      this.loading = false;
-      this.message = 'Información actualizada correctamente (simulación)';
-      this.messageType = 'success';
+    const updateData = {
+      name: this.user.nombre,
+      lastName: this.user.apellido,
+      email: this.user.email,
+      phoneNumber: this.user.telefono
+    };
 
-      // Limpiar el mensaje después de 3 segundos
-      setTimeout(() => this.message = '', 3000);
-    }, 1500);
+    this.profileService.updateProfile(updateData).subscribe({
+      next: () => {
+        this.loading = false;
+        this.showMessage('Información actualizada correctamente', 'success');
+      },
+      error: (err) => {
+        console.error(err);
+        this.loading = false;
+        this.showMessage('Error al actualizar el perfil', 'error');
+      }
+    });
+  }
+
+  private showMessage(msg: string, type: 'success' | 'error'): void {
+    this.message = msg;
+    this.messageType = type;
+    setTimeout(() => this.message = '', 3000);
+  }
+
+  // Helper para deshabilitar campos no editables
+  isDisabled(field: string): boolean {
+    const nonEditableFields = ['tipoDocumento', 'numeroDocumento', 'genero', 'fechaNacimiento'];
+    return nonEditableFields.includes(field);
   }
 }

@@ -26,7 +26,7 @@
 .avatar {
   width: 50px;
   height: 50px;
-  background: rgb(57, 153, 255);
+  background: linear-gradient(to right, #1100ff, #85c2ff);
   color: white;
   border-radius: 50%;
   display: flex;
@@ -53,7 +53,7 @@
 }
 
 .menu-btn {
-  background:rgb(57, 153, 255);
+  background:linear-gradient(to right, #1100ff, #85c2ff);
   border: none;
   color: rgb(255, 255, 255);
   padding: 10px 15px;
@@ -65,18 +65,18 @@
   transition: all 0.3s;
 }
 
-/*
+
 .menu-btn:hover {
-  background: rgba(255, 255, 255, 0.21);
+  background: linear-gradient(to right, #1100ff, #7a32ff);
 }
   .menu-btn.logout:hover {
-  background: rgba(231, 76, 60, 0.3);
+  background: linear-gradient(to right, #ff0000, #ff3f32);
 }
-*/
+
 
 
 .menu-btn.logout {
-  background: red;
+  background: linear-gradient(to right, #ff0000, #ff8585);
 }
 
 
@@ -232,23 +232,23 @@
   padding: 8px 16px;
   border: none;
   border-radius: 6px;
-  background: rgb(57, 153, 255);
+  background: linear-gradient(to right, #1100ff, #85c2ff);
   color: white;
   cursor: pointer;
   transition: all 0.3s;
 }
 
-/*
+
 .btn:hover {
-  background: #2980b9;
+  background: linear-gradient(to right, #1100ff, #7a32ff);
 }
   .btn.primary:hover {
-  background: #27ae60;
+  background: linear-gradient(to right, #1100ff, #7a32ff);
 }
-*/
+
 
 .btn.primary {
-  background: rgb(57, 153, 255);
+  background: linear-gradient(to right, #1100ff, #85c2ff);
 }
 
 
