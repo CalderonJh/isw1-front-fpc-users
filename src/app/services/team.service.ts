@@ -29,13 +29,17 @@ export class TeamService {
   private imagesEndpoint = '/images/';
 
   constructor(private http: HttpClient, private sanitizer: DomSanitizer, private authService: AuthService) {}
-
-  getTeamsWithImages(): Observable<TeamWithImage[]> {
+  private getHeaders(): HttpHeaders {
     const token = this.authService.getToken();
-    console.log(token);
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}` // Reemplaza con tu token real
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
     });
+  }
+  getTeamsWithImages(): Observable<TeamWithImage[]> {
+
+
+    const headers = this.getHeaders();
 
     return this.http.get<Team[]>(`${this.baseUrl}${this.teamsEndpoint}`, { headers }).pipe(
       switchMap(teams => {
@@ -61,11 +65,7 @@ export class TeamService {
 
   private getImageUrl(imageId: string): Observable<SafeUrl> {
     if (!imageId) return of(this.sanitizer.bypassSecurityTrustUrl('img/llaneros.jpg'));
-    const token = this.authService.getToken();
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-
+    const headers = this.getHeaders();
     return this.http.get(`${this.baseUrl}${this.imagesEndpoint}${imageId}`, {
       headers,
       responseType: 'text'
