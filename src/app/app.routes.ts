@@ -41,6 +41,14 @@ export const routes: Routes = [
       ),
     canActivate: [AuthGuard] // Protege esta ruta
   },
+    {
+    path: 'comprar',
+    loadComponent: () =>
+      import('./pages/comprar-page/comprar-page.component').then(
+        (m) => m.ComprarComponent
+      ),
+    canActivate: [AuthGuard] // Protege esta ruta
+  },
   {
     path: '',
     redirectTo: 'login',
