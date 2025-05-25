@@ -1,5 +1,5 @@
 <div class="dashboard-container">
-  <!-- Barra superior (modificada) -->
+  <!-- Barra superior (sin cambios) -->
   <header class="top-bar">
     <div class="user-info">
       <div class="avatar">{{userInitials}}</div>
@@ -11,8 +11,6 @@
     </div>
 
     <nav class="main-menu">
-
-
       <a href="profile">
         <button class="menu-btn">
           <i class="material-icons">person</i>
@@ -20,9 +18,6 @@
         </button>
       </a>
 
-
-
-      <!-- Botón de logout actualizado -->
       <button class="menu-btn logout" (click)="logout()">
         <i class="material-icons">logout</i>
         <span>Salir</span>
@@ -30,13 +25,10 @@
     </nav>
   </header>
 
-
   <!-- Contenido principal -->
   <main class="content-area">
     <section class="carousel-section">
-
       <div class="section-header">
-
         <div class="carousel-nav">
           <button *ngFor="let tab of tabs"
                   [class.active]="activeTab === tab.id"
@@ -48,90 +40,64 @@
 
       <!-- Boletas -->
       <div class="carousel-content" *ngIf="activeTab === 0">
+        <div *ngIf="loading.boletas" class="loading-state">
+          <i class="material-icons">refresh</i>
+          <p>Cargando boletas...</p>
+        </div>
+
         <div class="card" *ngFor="let ticket of boletas">
           <div class="card-header">
             <h3>{{ticket.partido}}</h3>
             <span class="date">{{ticket.fecha}}</span>
           </div>
           <div class="card-body">
+            <img *ngIf="ticket.imageUrl" [src]="ticket.imageUrl" alt="Imagen del partido" class="offer-image">
             <p><i class="material-icons">location_on</i> {{ticket.ubicacion}}</p>
-            <div class="details">
-              <span class="section">Sección {{ticket.seccion}}</span>
-              <span class="price">{{ticket.precio | currency}}</span>
-            </div>
           </div>
           <div class="card-footer">
-            <button class="btn primary">Ver QR</button>
+            <button class="btn primary" (click)="navigateToBuy(ticket.id, 'ticket')" [disabled]="ticket.isPaused">
+              {{ticket.isPaused ? 'No disponible' : 'Comprar'}}
+            </button>
           </div>
         </div>
 
-        <div class="empty-state" *ngIf="boletas.length === 0">
+        <div class="empty-state" *ngIf="!loading.boletas && boletas.length === 0">
           <i class="material-icons">confirmation_number</i>
-          <h3>No tienes boletas</h3>
-          <p>Compra boletas para los próximos partidos</p>
-          <button class="btn">Ver eventos</button>
+          <h3>No hay boletas disponibles</h3>
+          <p>Próximamente habrá más ofertas</p>
         </div>
       </div>
 
       <!-- Abonos -->
       <div class="carousel-content" *ngIf="activeTab === 1">
-        <div class="card" *ngFor="let sub of abonos" [class.inactive]="!sub.activo">
+        <div *ngIf="loading.abonos" class="loading-state">
+          <i class="material-icons">refresh</i>
+          <p>Cargando abonos...</p>
+        </div>
+
+        <div class="card" *ngFor="let sub of abonos" [class.inactive]="sub.isPaused">
           <div class="card-header">
             <h3>{{sub.nombre}}</h3>
-            <span class="status" [class.active]="sub.activo">
-              {{sub.activo ? 'ACTIVO' : 'INACTIVO'}}
+            <span class="status" [class.active]="!sub.isPaused">
+              {{sub.isPaused ? 'PAUSADO' : 'DISPONIBLE'}}
             </span>
           </div>
           <div class="card-body">
+            <img *ngIf="sub.imageUrl" [src]="sub.imageUrl" alt="Imagen del abono" class="offer-image">
             <p><i class="material-icons">event</i> {{sub.temporada}}</p>
-            <p><i class="material-icons">local_offer</i> {{sub.beneficios[0]}}</p>
-            <div class="details">
-              <span><i class="material-icons">stadium</i> {{sub.asiento}}</span>
-              <span class="price">{{sub.precio | currency}}</span>
-            </div>
+            <p><i class="material-icons">stadium</i> {{sub.estadio}}</p>
           </div>
           <div class="card-footer">
-            <button class="btn" *ngIf="sub.activo">Renovar</button>
-            <button class="btn outline" *ngIf="!sub.activo">Detalles</button>
+            <button class="btn" (click)="navigateToBuy(sub.id, 'season-pass')" [disabled]="sub.isPaused">
+              {{sub.isPaused ? 'No disponible' : 'Comprar'}}
+            </button>
           </div>
         </div>
 
-        <div class="empty-state" *ngIf="abonos.length === 0">
+        <div class="empty-state" *ngIf="!loading.abonos && abonos.length === 0">
           <i class="material-icons">subscriptions</i>
-          <h3>No tienes abonos</h3>
-          <p>Descubre los beneficios de nuestros abonos</p>
-          <button class="btn">Ver planes</button>
-        </div>
-      </div>
-
-      <!-- Eventos -->
-      <div class="carousel-content" *ngIf="activeTab === 2">
-        <div class="card" *ngFor="let event of eventos">
-          <div class="card-header">
-            <div class="event-date">
-              <span class="day">{{event.fecha | date:'dd'}}</span>
-              <span class="month">{{event.fecha | date:'MMM' | uppercase}}</span>
-            </div>
-            <h3>{{event.nombre}}</h3>
-          </div>
-          <div class="card-body">
-            <p><i class="material-icons">schedule</i> {{event.hora}}</p>
-            <p><i class="material-icons">location_on</i> {{event.ubicacion}}</p>
-            <div class="details">
-              <span>Desde</span>
-              <span class="price">{{event.precioDesde | currency}}</span>
-            </div>
-          </div>
-          <div class="card-footer">
-            <button class="btn primary">Comprar</button>
-          </div>
-        </div>
-
-        <div class="empty-state" *ngIf="eventos.length === 0">
-          <i class="material-icons">event</i>
-          <h3>No hay eventos próximos</h3>
-          <p>Pronto anunciaremos nuevos partidos</p>
-          <button class="btn">Ver calendario</button>
+          <h3>No hay abonos disponibles</h3>
+          <p>Próximamente habrá más ofertas</p>
         </div>
       </div>
     </section>
