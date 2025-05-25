@@ -349,7 +349,7 @@ img {
 
 .offer-image {
   width: 100%;
-  height: auto;
+  height: 250px;
   object-fit: cover;
   border-radius: 4px;
   margin-bottom: 1rem;
