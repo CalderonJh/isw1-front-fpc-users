@@ -44,7 +44,7 @@ export class ComprarComponent implements OnInit {
 
   loadOfferDetails(): void {
     this.loading = true;
-    
+
     if (this.type === 'ticket') {
       this.purchaseService.getTicketStands(this.id).subscribe({
         next: (stands) => {
@@ -75,7 +75,7 @@ export class ComprarComponent implements OnInit {
   }
 
   loadTicketImage(): void {
-    this.stadiumImageUrl = this.sanitizer.bypassSecurityTrustUrl('img/llaneros.jpg');
+    this.stadiumImageUrl = this.sanitizer.bypassSecurityTrustUrl('img/estadio.jpeg');
   }
 
   loadSeasonPassImage(): void {
@@ -108,7 +108,7 @@ if (typeVerificado === this.type) {
       next: () => {
         this.showSuccessModal = true;
       },
-      
+
       error: (err) => {
         console.log('Registrando compra con:', this.selectedStand.saleId, hola);
 
@@ -125,7 +125,7 @@ else {
       next: () => {
         this.showSuccessModal = true;
       },
-      
+
       error: (err) => {
         console.log('Registrando compra con:', this.selectedStand.saleId, this.type);
 
