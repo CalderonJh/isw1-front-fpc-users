@@ -88,7 +88,7 @@ export class DashboardPageComponent implements OnInit {
           id: offer.id,
           nombre: offer.description,
           temporada: `Temporada ${offer.year} - ${offer.season}`,
-          estadio: offer.stadium,
+          estadio: offer.stadium.description,
           imageUrl: offer.imageUrl,
           isPaused: offer.isPaused
         }));
