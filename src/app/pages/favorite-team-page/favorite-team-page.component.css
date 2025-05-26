@@ -59,13 +59,13 @@ h1 {
   transition: all 0.3s ease;
 }
 
-/*
+
 .team-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   border-color: #ccf515;
 }
-*/
+
 
 .team-card.selected {
   border-color: rgb(57, 153, 255);
