@@ -1,0 +1,69 @@
+<div class="purchase-container">
+  <div *ngIf="loading" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Cargando información...</p>
+  </div>
+
+  <div *ngIf="!loading">
+    <!-- Imagen de la oferta -->
+    <div class="offer-header">
+      
+      
+      <div *ngIf="type === 'pass' && offerDetails" class="offer-info">
+        <h2>{{offerDetails.description}}</h2>
+        <p>Temporada {{offerDetails.year}} - {{offerDetails.season}}</p>
+        <p *ngIf="offerDetails.games.length > 0">Partidos incluidos: {{offerDetails.games.join(', ')}}</p>
+      </div>
+    </div>
+
+    <!-- Imagen del estadio -->
+    <div class="stadium-section">
+      <h3>Estadio</h3>
+      <img [src]="stadiumImageUrl" alt="Imagen del estadio" class="stadium-image">
+      <p *ngIf="offerDetails?.stadium">{{offerDetails.stadium.description}}</p>
+      <!-- TODO: Mostrar nombre del estadio para tickets cuando el backend lo proporcione -->
+    </div>
+
+    <!-- Selección de tribunas -->
+    <div class="stands-section">
+      <h3>Selecciona tu tribuna</h3>
+      
+      <div class="stands-list">
+        <div *ngFor="let stand of stands" 
+             class="stand-card" 
+             [class.selected]="selectedStand?.saleId === stand.saleId"
+             (click)="selectStand(stand)"
+             [class.unavailable]="!stand.available">
+          
+          <div class="stand-info">
+            <h4>{{stand.stand.description}}</h4>
+            <p class="price">{{stand.price | currency}}</p>
+          </div>
+          
+          <div class="stand-status">
+            <span *ngIf="!stand.available" class="unavailable-label">AGOTADO</span>
+            <span *ngIf="stand.available && selectedStand?.saleId === stand.saleId" class="selected-icon">✓</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón de compra -->
+    <div class="purchase-actions">
+      <button class="purchase-btn" 
+              (click)="finalizePurchase()" 
+              [disabled]="!selectedStand || !selectedStand.available">
+        Finalizar compra
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal de éxito -->
+  <div *ngIf="showSuccessModal" class="success-modal">
+    <div class="modal-content">
+      <h2>¡Compra exitosa!</h2>
+      <p>Tu compra se ha realizado correctamente.</p>
+      <button class="modal-btn" (click)="closeModal()">Aceptar</button>
+    </div>
+  </div>
+</div>

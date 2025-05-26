@@ -17,6 +17,7 @@
           type="email"
           id="email"
           name="email"
+          class="placeholder:text-gray-500 font-semibold placeholder:text-sm"
           [(ngModel)]="email"
           required
           placeholder="tucorreo@ejemplo.com"
@@ -37,7 +38,6 @@
             name="password"
             [(ngModel)]="password"
             required
-            placeholder="••••••••"
             #passwordInput="ngModel"
             [ngClass]="{'invalid': passwordInput.invalid && passwordInput.touched}"
           >
